@@ -34,7 +34,13 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 2. Install dependencies:
 ```bash
+# Install all dependencies (including development tools)
 pip install -r requirements.txt
+
+# Or, if using pip-tools
+pip install pip-tools
+pip-compile pyproject.toml
+pip-sync
 ```
 
 3. Copy `.env.example` to `.env` and update the values:
@@ -45,6 +51,103 @@ cp .env.example .env
 4. Run the development server:
 ```bash
 uvicorn main:app --reload
+```
+
+## Development Tools
+
+### Code Formatting (Black)
+Black is our code formatter of choice, ensuring consistent code style.
+
+```bash
+# Format a specific file
+black path/to/file.py
+
+# Format the entire project
+black .
+
+# Check formatting without making changes
+black . --check
+```
+
+Configuration: 100 character line length, targeting Python 3.9+
+
+### Import Sorting (isort)
+isort automatically organizes your imports according to PEP 8.
+
+```bash
+# Sort imports in a file
+isort path/to/file.py
+
+# Sort all project imports
+isort .
+
+# Check import sorting without making changes
+isort . --check
+```
+
+Configuration: Black-compatible, 100 character line length
+
+### Linting (Flake8)
+Flake8 checks for style guide enforcement and common errors.
+
+```bash
+# Lint specific file
+flake8 path/to/file.py
+
+# Lint entire project
+flake8 .
+```
+
+Common error codes:
+- E### / W###: PEP 8 errors/warnings
+- F###: PyFlakes errors
+- C###: McCabe complexity
+
+### Type Checking (MyPy)
+MyPy performs static type checking of Python code.
+
+```bash
+# Type check specific file
+mypy path/to/file.py
+
+# Type check entire project
+mypy .
+```
+
+Configuration:
+- Strict type checking enabled
+- Untyped definitions disallowed
+- Return type checking enforced
+
+### Testing (Pytest)
+Pytest is our testing framework, supporting both sync and async tests.
+
+```bash
+# Run all tests
+pytest
+
+# Run specific test file
+pytest path/to/test_file.py
+
+# Run tests with coverage report
+pytest --cov=app
+
+# Run tests matching a pattern
+pytest -k "test_pattern"
+```
+
+Test file naming convention: `test_*.py`
+
+### Running All Checks
+
+We provide a convenience script to run all checks in sequence:
+
+```bash
+# Format code
+black . && isort .
+
+# Run all checks
+flake8 . && mypy . && pytest
 ```
 
 ## Environment Variables
@@ -85,16 +188,20 @@ Once the server is running, you can access:
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
-## Development
+## Development Best Practices
 
-- The API follows a modular structure with clear separation of concerns
-- Uses Pydantic for data validation
-- Implements CORS for frontend integration
-- Includes a health check endpoint
+1. **Code Quality Process**
+   - Run formatters (Black, isort) before committing
+   - Ensure all tests pass
+   - Check type hints with MyPy
+   - Keep test coverage high
 
-## Testing
+2. **Git Workflow**
+   - Create feature branches from main
+   - Run all checks before pushing
+   - Keep commits atomic and well-described
 
-Run tests using pytest:
-```bash
-pytest
-```
+3. **Documentation**
+   - Document all public functions and classes
+   - Keep README up to date
+   - Document API endpoints in code
