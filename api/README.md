@@ -182,6 +182,58 @@ settings = get_settings()
 value = settings.MY_NEW_VARIABLE
 ```
 
+## Deployment
+
+### Vercel Environment Variables
+
+When deploying to Vercel, you need to configure the following environment variables:
+
+#### Required Variables
+
+| Variable | Description | Example Value |
+|----------|-------------|---------------|
+| `ENVIRONMENT` | Deployment environment | `production` |
+| `DEBUG` | Debug mode (should be false in production) | `false` |
+
+#### Optional Variables
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `APP_NAME` | Name of your API | `"FastNext Starter API"` |
+| `APP_DESCRIPTION` | API description | `"A FastAPI backend for the Fast Next Starter project"` |
+| `APP_VERSION` | API version | `"0.1.0"` |
+| `ALLOWED_ORIGINS` | Comma-separated list of allowed CORS origins | `https://your-domain.vercel.app,https://*.vercel.app` |
+
+### Setting Up Environment Variables in Vercel
+
+1. Go to your project settings in Vercel
+2. Navigate to the "Environment Variables" section
+3. Add each required variable
+4. For preview deployments, you can set different values using the "Preview" environment
+
+### Environment-Specific Configuration
+
+- **Production**: Use your actual domain
+  ```
+  ENVIRONMENT=production
+  DEBUG=false
+  ALLOWED_ORIGINS=https://your-domain.vercel.app
+  ```
+
+- **Preview Deployments**: Allow Vercel preview URLs
+  ```
+  ENVIRONMENT=production
+  DEBUG=false
+  ALLOWED_ORIGINS=https://*.vercel.app
+  ```
+
+- **Development**: Local development settings
+  ```
+  ENVIRONMENT=development
+  DEBUG=true
+  ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+  ```
+
 ## API Documentation
 
 Once the server is running, you can access:
