@@ -16,14 +16,14 @@ export const logger = {
     },
   };
 
-// In development, use localhost. In production, use the deployed API URL
+// Get API base URL based on environment
 const getApiBaseUrl = () => {
-  if (process.env.NODE_ENV === 'development') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-  }
-  // In production, use the same domain with /api prefix
-  return '/api';
-};
+    if (process.env.NODE_ENV === 'development') {
+      return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    }
+    // In production, use the deployed API URL
+    return 'https://api-spring-cloud-8971.fly.dev';
+  };
 
 export const API_BASE_URL = getApiBaseUrl();
 
