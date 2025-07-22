@@ -1,8 +1,9 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
-from config.settings import get_settings
+from config.settings import get_settings, Settings
 from utils.constants import ResponseMessage, StatusCode
 
 
@@ -30,6 +31,7 @@ def create_application() -> FastAPI:
         description=settings.APP_DESCRIPTION,
         version=settings.APP_VERSION,
         lifespan=lifespan,
+        root_path="/api" if not settings.DEBUG else ""  # Add root_path for production
     )
 
     # Configure CORS
@@ -55,3 +57,17 @@ async def health_check():
         "code": StatusCode.HTTP_200_OK,
         "message": "API is healthy"
     }
+
+
+@app.get("/api/info")
+async def get_api_info(settings: Settings = Depends(get_settings)):
+    """Example endpoint using settings"""
+    return {
+        "name": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "description": settings.APP_DESCRIPTION,
+        "debug_mode": settings.DEBUG
+    }
+
+# Handler for Vercel serverless
+handler = Mangum(app)

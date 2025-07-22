@@ -16,7 +16,16 @@ export const logger = {
     },
   };
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// In development, use localhost. In production, use the deployed API URL
+const getApiBaseUrl = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  }
+  // In production, use the same domain with /api prefix
+  return '/api';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 export const API_ENDPOINTS = {
     HEALTH: `${API_BASE_URL}/health`,

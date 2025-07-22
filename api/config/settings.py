@@ -17,14 +17,22 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",  # Local frontend
         "http://127.0.0.1:3000",
+        "https://*.vercel.app",   # Vercel preview deployments
     ]
     ALLOWED_METHODS: List[str] = ["*"]
     ALLOWED_HEADERS: List[str] = ["*"]
     ALLOW_CREDENTIALS: bool = True
+
+    # Environment
+    ENVIRONMENT: str = "development"
     
     class Config:
         env_file = ".env"
         case_sensitive = True
+
+    @property
+    def is_development(self) -> bool:
+        return self.ENVIRONMENT.lower() == "development"
 
 
 @lru_cache()
