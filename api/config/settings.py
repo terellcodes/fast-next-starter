@@ -18,6 +18,7 @@ class Settings(BaseSettings):
         "http://localhost:3000",  # Local frontend
         "http://127.0.0.1:3000",
         "https://*.vercel.app",   # Vercel preview deployments
+        "https://fast-next-starter.vercel.app"  # Production frontend (update this with your actual domain)
     ]
     ALLOWED_METHODS: List[str] = ["*"]
     ALLOWED_HEADERS: List[str] = ["*"]
